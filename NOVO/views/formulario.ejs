@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro</title>
+</head>
+<body>
+<h1>Cadastro de Dados</h1>
+<form action="/formulario" method="POST">
+
+<label for="fornecedorNome">Nome do Fornecedor:</label><br>
+<input type="text" id="fornecedorNome" name="fornecedorNome"><br><br>
+
+<label for="fornecedorCnpj">CNPJ do Fornecedor:</label><br>
+<input type="text" id="fornecedorCnpj" name="fornecedorCnpj"><br><br>
+
+<label for="fornecedorTelefone">Telefone do Fornecedor:</label><br>
+<input type="text" id="fornecedorTelefone" name="fornecedorTelefone"><br><br>
+
+<label for="produtoNome">Nome do Produto:</label><br>
+<input type="text" id="produtoNome" name="produtoNome"><br><br>
+
+<label for="produtoEstoque">Estoque do Produto:</label><br>
+<input type="number" id="produtoEstoque" name="produtoEstoque"><br><br>
+
+<label for="produtoPreco">Preço do Produto:</label><br>
+<input type="number" id="produtoPreco" name="produtoPreco"><br><br>
+
+<label for="produtoFornecedorIDFK">ID do Fornecedor:</label><br>
+<input type="number" id="produtoFornecedorIDFK" name="produtoFornecedorIDFK"><br><br>
+
+<label for="categoriaNome">Nome da Categoria:</label><br>
+<input type="text" id="categoriaNome" name="categoriaNome"><br><br>
+
+<label for="categoriaProdutoIDFK">ID do Produto:</label><br>
+<input type="number" id="categoriaProdutoIDFK" name="categoriaProdutoIDFK"><br><br>
+
+<label for="lojaNome">Nome da Loja:</label><br>
+<input type="text" id="lojaNome" name="lojaNome"><br><br>
+
+<label for="lojaEndereco">Endereço da Loja:</label><br>
+<input type="text" id="lojaEndereco" name="lojaEndereco"><br><br>
+
+<label for="fornecedorLojaFornecedorIDFK">ID do Fornecedor:</label><br>
+<input type="number" id="fornecedorLojaFornecedorIDFK" name="fornecedorLojaFornecedorIDFK"><br><br>
+
+<label for="fornecedorLojaLojaIDFK">ID da Loja:</label><br>
+<input type="number" id="fornecedorLojaLojaIDFK" name="fornecedorLojaLojaIDFK"><br><br>
+
+<label for="clienteNome">Nome do Cliente:</label><br>
+<input type="text" id="clienteNome" name="clienteNome"><br><br>
+
+<label for="clienteCpf">CPF do Cliente:</label><br>
+<input type="text" id="clienteCpf" name="clienteCpf"><br><br>
+
+<label for="clienteProdutoIDFK">ID do Produto:</label><br>
+<input type="number" id="clienteProdutoIDFK" name="clienteProdutoIDFK"><br><br>
+
+<label for="cargoNome">Nome do Cargo:</label><br>
+<input type="text" id="cargoNome" name="cargoNome"><br><br>
+
+<label for="cargoSalario">Salário do Cargo:</label><br>
+<input type="number" id="cargoSalario" name="cargoSalario"><br><br>
+
+<label for="funcionarioNome">Nome do Funcionário:</label><br>
+<input type="text" id="funcionarioNome" name="funcionarioNome"><br><br>
+
+<label for="funcionarioCPF">CPF do Funcionário:</label><br>
+<input type="text" id="funcionarioCPF" name="funcionarioCPF"><br><br>
+
+<label for="funcionarioCargoIDFK">ID do Cargo:</label><br>
+<input type="number" id="funcionarioCargoIDFK" name="funcionarioCargoIDFK"><br><br>
+
+<label for="formasPagamentoDescricao">Descrição da Forma de Pagamento:</label><br>
+<input type="text" id="formasPagamentoDescricao" name="formasPagamentoDescricao"><br><br>
+
+<label for="pedidoData">Data do Pedido:</label><br>
+<input type="date" id="pedidoData" name="pedidoData"><br><br>
+
+<label for="pedidoValorTotal">Valor Total do Pedido:</label><br>
+<input type="number" id="pedidoValorTotal" name="pedidoValorTotal"><br><br>
+
+<label for="pedidoClienteIDFK">ID do Cliente:</label><br>
+<input type="number" id="pedidoClienteIDFK" name="pedidoClienteIDFK"><br><br>
+
+<label for="pedidoFuncionarioIDFK">ID do Funcionário:</label><br>
+<input type="number" id="pedidoFuncionarioIDFK" name="pedidoFuncionarioIDFK"><br><br>
+
+<label for="pedidoFormasPagamentoIDFK">ID da Forma de Pagamento:</label><br>
+<input type="number" id="pedidoFormasPagamentoIDFK" name="pedidoFormasPagamentoIDFK"><br><br>
+
+<label for="itemPedidoQuantidade">Quantidade do Item:</label><br>
+<input type="number" id="itemPedidoQuantidade" name="itemPedidoQuantidade"><br><br>
+
+<label for="itemPedidoPrecoUnitario">Preço Unitário do Item:</label><br>
+<input type="number" id="itemPedidoPrecoUnitario" name="itemPedidoPrecoUnitario"><br><br>
+
+<label for="itemPedidoSubTotal">Subtotal do Item:</label><br>
+<input type="number" id="itemPedidoSubTotal" name="itemPedidoSubTotal"><br><br>
+
+<label for="itemPedidoPedidoIDFK">ID do Pedido:</label><br>
+<input type="number" id="itemPedidoPedidoIDFK" name="itemPedidoPedidoIDFK"><br><br>
+
+<label for="itemPedidoProdutoIDFK">ID do Produto:</label><br>
+<input type="number" id="itemPedidoProdutoIDFK" name="itemPedidoProdutoIDFK"><br><br>
+
+<button type="submit">Salvar</button>
+</form>
+</body>
+</html>
