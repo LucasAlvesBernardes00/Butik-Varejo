@@ -70,9 +70,11 @@ pedidoValorTotal decimal(10,2) not null,
 pedidoClienteIDFK int not null,
 pedidoFuncionarioIDFK int not null,
 pedidoFormasPagamentoIDFK int not null,
+pedidoProdutoIDFK int not null,
 foreign key (pedidoClienteIDFK) references cliente(clienteID),
 foreign key (pedidoFormasPagamentoIDFK) references formasPagamento(formasPagamentoID),
 foreign key (pedidoFuncionarioIDFK) references funcionario(funcionarioID)
+foreign key (pedidoProdutoIDFK) references produto(produtoID),
 );
 
 
