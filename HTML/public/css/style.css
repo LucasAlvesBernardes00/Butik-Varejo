@@ -1,19 +1,50 @@
-body {
-    display: flex;
-    justify-content: center;
-}
-
-form {
-    width: 400px;
-    margin-top: 40px;
-}
-
-input, button {
-    width: 100%;
-    padding: 8px;
+* {
     box-sizing: border-box;
 }
 
-button {
-    margin-top: 10px;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+#logo {
+    margin: 0;
+}
+
+#menu a {
+    margin-left: 15px;
+}
+
+#conteudo {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+#produtos {
+    display: grid;
+    gap: 20px;
+}
+
+#produtos div {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+
+#footer {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid #ccc;
 }

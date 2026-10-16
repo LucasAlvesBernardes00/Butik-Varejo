@@ -1,0 +1,21 @@
+<%- include('partials/header', { titulo: 'Produtos' }) %>
+
+<h2 id="titulo-pagina">Produtos da Butik</h2>
+
+<% if (produtos.length === 0) { %>
+  <p id="sem-produtos">Nenhum produto cadastrado.</p>
+<% } else { %>
+  <div id="produtos">
+    <% produtos.forEach(p => { %>
+      <div>
+        <h3><%= p.produtoNome %></h3>
+        <p>Categoria: <%= p.produtoCategoria %></p>
+        <p>Fornecedor: <%= p.fornecedorNome %></p>
+        <p>Preço: R$ <%= p.produtoPreco %></p>
+        <p>Estoque: <%= p.produtoEstoque %></p>
+      </div>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

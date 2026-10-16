@@ -8,6 +8,19 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoCategoria, p.produtoPreco, p.produtoEstoque, f.fornecedorNome from produto p join fornecedor f on f.fornecedorID = p.produtoFornecedorIDFK;`;
+    db.query(sqlProdutos, (error, produtos) => {
+    if (error) {
+        console.log('Erro ao buscar produtos', error);
+        return res.status(500).send('Erro interno no servidor.');
+    }
+
+    res.render('home', { produtos });
+
+    });
+});
+
 app.get('/formulario', (req, res) => {
     res.render('formulario');
 });
@@ -85,5 +98,5 @@ app.post('/formulario', (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log('Servidor rodando em http://localhost:3000/formulario');
+    console.log('Servidor rodando em http://localhost:3000/');
 })
