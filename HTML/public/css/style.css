@@ -2,12 +2,16 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    min-height: 100%;
     display: flex;
     flex-direction: column;
+    min-height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 #header {
@@ -25,6 +29,7 @@ body {
     margin-left: 15px;
 }
 
+
 #conteudo {
     flex: 1;
     width: 100%;
@@ -33,18 +38,20 @@ body {
     padding: 30px;
 }
 
+
 #produtos {
     display: grid;
     gap: 20px;
 }
 
 #produtos div {
-    border: 1px solid #ccc;
     padding: 15px;
+    border: 1px solid #ccc;
 }
 
+
 #footer {
-    text-align: center;
     padding: 15px;
     border-top: 1px solid #ccc;
+    text-align: center;
 }

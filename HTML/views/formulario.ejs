@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Cadastro</title>
-</head>
-<body>
-<h1>Cadastro de Dados</h1>
+<%- include('partials/header') %>
+
+<h2>Cadastro de Dados</h2>
 <form action="/formulario" method="POST">
 
 <label for="fornecedorNome">Nome do Fornecedor:</label><br>
@@ -72,5 +67,5 @@
 
 <button type="submit">Salvar</button>
 </form>
-</body>
-</html>
+
+<%- include('partials/footer') %>
