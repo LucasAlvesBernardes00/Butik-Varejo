@@ -1,1 +1,69 @@
-https://mermaid.ai/live/edit?utm_medium=share&utm_source=mermaid_live_editor#pako:eNqVVU2P2jAQ_SuWz4DYAMkm1-0iVfTAob1UXGbtIXib2FnHWbUF_nudT-wsLCoHlHl-mXnzZqwcKVMcaUJRfxGQash3eif3SktkyJXGkpxO0-npSAqteGVUSRJisGExMJgqLcBSyHRKHNKFkwmUpsnygcJUXmi4Uq9jXtBv6hUSMqupmX28x9lXkgklQQvlUBnotFGm4QWyAzz3reZQbiGF3ApVjk7kgtf8JmUXXY6FbXDbgD2j9-c2ZazdkTmWNXblWANCGiL4eoDJdlPD76DZATSRKsdnaymW4MJMFq9ubDDDvZJYY-e-Vq_eqbNtoStF3NiWY6p_CUuj3iq8qnW98QoOy-NUfBoW6npNX9coYWOuk6zehzvaUXLs5Z8_ul5n-Mz3Gy065cc9d5fBbbmF7ghlxf5u_-16e25a4EZijkzkkJESsnr9fAOctXTbv8D_o7ZVMdI6unS-ye6Jm5ZjybRg4KvtLqa7tw3izah32R2Q2896c1NBd8btahL7B21218N3yJT-rgxknrDL7Xe0fR1AT18HuTL8KdfYWwXSCA7cm2Bz_37Yav0ch9FWL2YQRSc01YLTxOgKJzRH22Md0uNOErKj5oB2hjSxjxz0rx1t3ylA_lQq71_TqkoPNNlDVtqoKmpTuq_GgOrmUj2pShqaLOZR2GShyZH-tnEwC-OHOF4F0WK1DB-DCf1Dk4d5PJuHwXJlT6I4WkaL84T-berOZ4_Ram5_QRwGQbhaLs__AF2Ge6w
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Verdana, sans-serif"
+    fontSize: "14px"
+    primaryColor: "#C7D2FE"
+    primaryTextColor: "#1E1B4B"
+    primaryBorderColor: "#4F46E5"
+    lineColor: "#4F46E5"
+    secondaryColor: "#E0E7FF"
+    tertiaryColor: "#FFFFFF"
+    attributeBackgroundColorOdd: "#FFFFFF"
+    attributeBackgroundColorEven: "#EEF2FF"
+---
+erDiagram
+    fornecedor ||--o{ produto : fornece
+    cliente ||--o{ pedido : realiza
+    funcionario ||--o{ pedido : atende
+    pedido ||--|{ itemPedido : contem
+    produto ||--o{ itemPedido : esta_em
+
+    fornecedor {
+        int fornecedorID PK
+        varchar fornecedorNome
+        varchar fornecedorCnpj
+        varchar fornecedorTelefone
+    }
+
+    produto {
+        int produtoID PK
+        varchar produtoNome
+        varchar produtoCategoria
+        int produtoEstoque
+        decimal produtoPreco
+        int produtoFornecedorIDFK FK
+    }
+
+    cliente {
+        int clienteID PK
+        varchar clienteNome
+        varchar clienteCpf
+    }
+
+    funcionario {
+        int funcionarioID PK
+        varchar funcionarioNome
+        varchar funcionarioCPF
+        varchar funcionarioCargo
+        decimal funcionarioSalario
+    }
+
+    pedido {
+        int pedidoID PK
+        date pedidoData
+        decimal pedidoValorTotal
+        enum pedidoFormaPagamento
+        int pedidoClienteIDFK FK
+        int pedidoFuncionarioIDFK FK
+    }
+
+    itemPedido {
+        int itemPedidoID PK
+        int itemPedidoQuantidade
+        decimal itemPedidoPrecoUnitario
+        decimal itemPedidoSubTotal
+        int itemPedidoPedidoIDFK FK
+        int itemPedidoProdutoIDFK FK
+    }

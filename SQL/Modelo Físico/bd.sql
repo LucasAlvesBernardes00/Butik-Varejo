@@ -1,93 +1,49 @@
-create database if not exists butik;
-use butik;
- 
-create table fornecedor(
+create database if not exists butikVarejoDB;
+use butikVarejoDB;
+
+create table fornecedor (
 fornecedorID int primary key auto_increment not null,
 fornecedorNome varchar(100) not null,
 fornecedorCnpj varchar(30) not null unique,
 fornecedorTelefone varchar(20) not null
 );
- 
-create table categoria (
-categoriaID int not null primary key auto_increment,
-categoriaNome varchar(100) not null
-);
- 
-create table produto(
+
+create table produto (
 produtoID int primary key auto_increment not null,
 produtoNome varchar(100) not null,
+produtoCategoria varchar(100) not null,
 produtoEstoque int not null,
 produtoPreco decimal(10,2) not null,
 produtoFornecedorIDFK int not null,
-produtoCategoriaIDFK int not null,
-foreign key (produtoFornecedorIDFK) references fornecedor(fornecedorID),
-foreign key (produtoCategoriaIDFK) references categoria(categoriaID)
+foreign key (produtoFornecedorIDFK) references fornecedor(fornecedorID)
 );
- 
-create table loja(
-lojaID int not null primary key auto_increment,
-lojaNome varchar(100) not null,
-lojaEndereco varchar(100)
-);
- 
-create table fornecedorLoja (
-fornecedorLojaID int not null primary key auto_increment,
-fornecedorLojaFornecedorIDFK int not null,
-fornecedorLojaLojaIDFK int not null,
-foreign key (fornecedorLojaFornecedorIDFK) references fornecedor(fornecedorID),
-foreign key (fornecedorLojaLojaIDFK) references loja(lojaID)
-);
- 
+
 create table cliente (
 clienteID int not null primary key auto_increment,
 clienteNome varchar(50) not null,
 clienteCpf varchar(11) not null unique
 );
- 
-create table cargo (
-cargoID int not null primary key auto_increment,
-cargoNome varchar(100) not null,
-cargoSalario decimal(10,2) not null
-);
- 
+
 create table funcionario (
 funcionarioID int not null primary key auto_increment,
 funcionarioNome varchar(100) not null,
 funcionarioCPF varchar(11) not null unique,
-funcionarioCargoIDFK int not null,
-funcionarioLojaIDFK int,
-foreign key (funcionarioCargoIDFK) references cargo(cargoID),
-foreign key (funcionarioLojaIDFK) references loja(lojaID)
+funcionarioCargo varchar(100) not null,
+funcionarioSalario decimal(10,2) not null
 );
- 
-create table usuario (
-usuarioID int not null primary key auto_increment,
-usuarioLogin varchar(50) not null unique,
-usuarioSenhaHash varchar(255) not null,
-usuarioFuncionarioIDFK int not null unique,
-foreign key (usuarioFuncionarioIDFK) references funcionario(funcionarioID)
-);
- 
-create table formasPagamento(
-formasPagamentoID int not null primary key auto_increment,
-formasPagamentoDescricao varchar(100) not null
-);
- 
+
 create table pedido (
 pedidoID int not null primary key auto_increment,
 pedidoData date not null,
 pedidoValorTotal decimal(10,2) not null,
+pedidoFormaPagamento enum('dinheiro','pix','debito','credito') not null,
 pedidoClienteIDFK int not null,
 pedidoFuncionarioIDFK int not null,
-pedidoFormasPagamentoIDFK int not null,
-pedidoProdutoIDFK int not null,
 foreign key (pedidoClienteIDFK) references cliente(clienteID),
-foreign key (pedidoFormasPagamentoIDFK) references formasPagamento(formasPagamentoID),
-foreign key (pedidoFuncionarioIDFK) references funcionario(funcionarioID),
-foreign key (pedidoProdutoIDFK) references produto(produtoID)
+foreign key (pedidoFuncionarioIDFK) references funcionario(funcionarioID)
 );
- 
-create table itemPedido(
+
+create table itemPedido (
 itemPedidoID int not null primary key auto_increment,
 itemPedidoQuantidade int not null,
 itemPedidoPrecoUnitario decimal(10,2) not null,
