@@ -15,14 +15,10 @@ app.get('/formulario', (req, res) => {
 app.post('/formulario', (req, res) => {
     const {
         fornecedorNome, fornecedorCnpj, fornecedorTelefone,
-        categoriaNome,
-        produtoNome, produtoEstoque, produtoPreco,
-        lojaNome, lojaEndereco,
+        produtoNome, produtoCategoria, produtoEstoque, produtoPreco,
         clienteNome, clienteCpf,
-        cargoNome, cargoSalario,
-        funcionarioNome, funcionarioCPF,
-        formasPagamentoDescricao,
-        pedidoData, pedidoValorTotal,
+        funcionarioNome, funcionarioCPF, funcionarioCargo, funcionarioSalario,
+        pedidoData, pedidoValorTotal, pedidoFormaPagamento,
         itemPedidoQuantidade, itemPedidoPrecoUnitario, itemPedidoSubTotal
     } = req.body;
 
@@ -35,37 +31,14 @@ app.post('/formulario', (req, res) => {
     }
 
     const fornecedorID = resFornecedor.insertId;
-    const sqlCategoria = `insert into categoria (categoriaNome) values (?);`;
-    db.query(sqlCategoria, [categoriaNome], (error, resCategoria) => {
-    if (error) {
-        console.log('Erro ao inserir categoria', error);
-        return res.status(500).send('Erro interno no servidor.');
-    }
-
-    const categoriaID = resCategoria.insertId;
-    const sqlProduto = `insert into produto (produtoNome, produtoEstoque, produtoPreco, produtoFornecedorIDFK, produtoCategoriaIDFK) values (?, ?, ?, ?, ?);`;
-    db.query(sqlProduto, [produtoNome, produtoEstoque, produtoPreco, fornecedorID, categoriaID], (error, resProduto) => {
+    const sqlProduto = `insert into produto (produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK) values (?, ?, ?, ?, ?);`;
+    db.query(sqlProduto, [produtoNome, produtoCategoria, produtoEstoque, produtoPreco, fornecedorID], (error, resProduto) => {
     if (error) {
         console.log('Erro ao inserir produto', error);
         return res.status(500).send('Erro interno no servidor.');
     }
 
     const produtoID = resProduto.insertId;
-    const sqlLoja = `insert into loja (lojaNome, lojaEndereco) values (?, ?);`;
-    db.query(sqlLoja, [lojaNome, lojaEndereco], (error, resLoja) => {
-    if (error) {
-        console.log('Erro ao inserir loja', error);
-        return res.status(500).send('Erro interno no servidor.');
-    }
-
-    const lojaID = resLoja.insertId;
-    const sqlFornecedorLoja = `insert into fornecedorLoja (fornecedorLojaFornecedorIDFK, fornecedorLojaLojaIDFK) values (?, ?);`;
-    db.query(sqlFornecedorLoja, [fornecedorID, lojaID], (error) => {
-    if (error) {
-        console.log('Erro ao inserir fornecedorLoja', error);
-        return res.status(500).send('Erro interno no servidor.');
-    }
-
     const sqlCliente = `insert into cliente (clienteNome, clienteCpf) values (?, ?);`;
     db.query(sqlCliente, [clienteNome, clienteCpf], (error, resCliente) => {
     if (error) {
@@ -74,32 +47,16 @@ app.post('/formulario', (req, res) => {
     }
 
     const clienteID = resCliente.insertId;
-    const sqlCargo = `insert into cargo (cargoNome, cargoSalario) values (?, ?);`;
-    db.query(sqlCargo, [cargoNome, cargoSalario], (error, resCargo) => {
-    if (error) {
-        console.log('Erro ao inserir cargo', error);
-        return res.status(500).send('Erro interno no servidor.');
-    }
-
-    const cargoID = resCargo.insertId;
-    const sqlFuncionario = `insert into funcionario (funcionarioNome, funcionarioCPF, funcionarioCargoIDFK, funcionarioLojaIDFK) values (?, ?, ?, ?);`;
-    db.query(sqlFuncionario, [funcionarioNome, funcionarioCPF, cargoID, lojaID], (error, resFuncionario) => {
+    const sqlFuncionario = `insert into funcionario (funcionarioNome, funcionarioCPF, funcionarioCargo, funcionarioSalario) values (?, ?, ?, ?);`;
+    db.query(sqlFuncionario, [funcionarioNome, funcionarioCPF, funcionarioCargo, funcionarioSalario], (error, resFuncionario) => {
     if (error) {
         console.log('Erro ao inserir funcionario', error);
         return res.status(500).send('Erro interno no servidor.');
     }
 
     const funcionarioID = resFuncionario.insertId;
-    const sqlFormasPagamento = `insert into formasPagamento (formasPagamentoDescricao) values (?);`;
-    db.query(sqlFormasPagamento, [formasPagamentoDescricao], (error, resFormasPagamento) => {
-    if (error) {
-        console.log('Erro ao inserir formasPagamento', error);
-        return res.status(500).send('Erro interno no servidor.');
-    }
-
-    const formasPagamentoID = resFormasPagamento.insertId;
-    const sqlPedido = `insert into pedido (pedidoData, pedidoValorTotal, pedidoClienteIDFK, pedidoFuncionarioIDFK, pedidoFormasPagamentoIDFK, pedidoProdutoIDFK) values (?, ?, ?, ?, ?, ?);`;
-    db.query(sqlPedido, [pedidoData, pedidoValorTotal, clienteID, funcionarioID, formasPagamentoID, produtoID], (error, resPedido) => {
+    const sqlPedido = `insert into pedido (pedidoData, pedidoValorTotal, pedidoFormaPagamento, pedidoClienteIDFK, pedidoFuncionarioIDFK) values (?, ?, ?, ?, ?);`;
+    db.query(sqlPedido, [pedidoData, pedidoValorTotal, pedidoFormaPagamento, clienteID, funcionarioID], (error, resPedido) => {
     if (error) {
         console.log('Erro ao inserir pedido', error);
         return res.status(500).send('Erro interno no servidor.');
@@ -122,16 +79,11 @@ app.post('/formulario', (req, res) => {
     });
     });
     });
-    });
-    });
-    });
-    });
-    });
     } catch (error) {
         console.log('Ocorreu um erro', error);
     }
 });
 
 app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
+    console.log('Servidor rodando em http://localhost:3000/formulario');
 })
