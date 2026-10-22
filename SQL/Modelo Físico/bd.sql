@@ -21,15 +21,9 @@ foreign key (produtoFornecedorIDFK) references fornecedor(fornecedorID)
 create table cliente (
 clienteID int not null primary key auto_increment,
 clienteNome varchar(50) not null,
-clienteCpf varchar(11) not null unique
-);
-
-create table funcionario (
-funcionarioID int not null primary key auto_increment,
-funcionarioNome varchar(100) not null,
-funcionarioCPF varchar(11) not null unique,
-funcionarioCargo varchar(100) not null,
-funcionarioSalario decimal(10,2) not null
+clienteCpf varchar(11) not null unique,
+clienteEmail varchar(100) not null unique,
+clienteSenha varchar(50) not null
 );
 
 create table pedido (
@@ -38,9 +32,7 @@ pedidoData date not null,
 pedidoValorTotal decimal(10,2) not null,
 pedidoFormaPagamento enum('dinheiro','pix','debito','credito') not null,
 pedidoClienteIDFK int not null,
-pedidoFuncionarioIDFK int not null,
-foreign key (pedidoClienteIDFK) references cliente(clienteID),
-foreign key (pedidoFuncionarioIDFK) references funcionario(funcionarioID)
+foreign key (pedidoClienteIDFK) references cliente(clienteID)
 );
 
 create table itemPedido (

@@ -1,3 +1,8 @@
+app.listen(3000, () => {
+    console.log('Servidor rodando em http://localhost:3000/');
+})
+
+
 <%- include('partials/header') %>
 
 <h2>Cadastro de Dados</h2>
@@ -30,17 +35,11 @@
 <label for="clienteCpf">CPF do Cliente:</label><br>
 <input type="text" id="clienteCpf" name="clienteCpf"><br><br>
 
-<label for="funcionarioNome">Nome do Funcionário:</label><br>
-<input type="text" id="funcionarioNome" name="funcionarioNome"><br><br>
+<label for="clienteEmail">E-mail do cliente</label>
+<input type="email" id="clienteEmail" name="clienteEmail" required>
 
-<label for="funcionarioCPF">CPF do Funcionário:</label><br>
-<input type="text" id="funcionarioCPF" name="funcionarioCPF"><br><br>
-
-<label for="funcionarioCargo">Cargo do Funcionário:</label><br>
-<input type="text" id="funcionarioCargo" name="funcionarioCargo"><br><br>
-
-<label for="funcionarioSalario">Salário do Funcionário:</label><br>
-<input type="number" id="funcionarioSalario" name="funcionarioSalario"><br><br>
+<label for="clienteSenha">Senha do cliente</label>
+<input type="password" id="clienteSenha" name="clienteSenha" maxlength="50" required>
 
 <label for="pedidoData">Data do Pedido:</label><br>
 <input type="date" id="pedidoData" name="pedidoData"><br><br>
