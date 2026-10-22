@@ -1,3 +1,26 @@
+/* =========================================
+   BUTIK - Sistema de Gestão para Varejos
+   Folha de estilo principal
+   ========================================= */
+
+/* Fonte Poppins do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap');
+
+/* ---------- Paleta de cores (igual à logo) ---------- */
+:root {
+    --roxo: #6232c2;          /* cor principal da logo */
+    --roxo-escuro: #4a2496;   /* hover dos botões */
+    --roxo-claro: #d9cef0;    /* detalhes e bordas */
+    --roxo-fundo: #f6f2fd;    /* fundo da página */
+    --branco: #ffffff;
+    --texto: #2b2140;         /* texto principal */
+    --texto-suave: #6b6480;   /* texto secundário */
+    --borda: #e6dff5;
+    --sombra: 0 4px 14px rgba(98, 50, 194, 0.10);
+    --raio: 12px;             /* arredondamento padrão */
+}
+
+/* ---------- Base ---------- */
 * {
     box-sizing: border-box;
 }
@@ -11,47 +34,242 @@ body {
     flex-direction: column;
     min-height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: var(--roxo-fundo);
+    color: var(--texto);
+    line-height: 1.6;
 }
 
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+/* ---------- Cabeçalho ---------- */
 #header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
+    padding: 18px 40px;
+    background-color: var(--branco);
+    border-bottom: 3px solid var(--roxo);
+    box-shadow: var(--sombra);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 #logo {
     margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--roxo);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
+/* Menu de navegação */
 #menu a {
-    margin-left: 15px;
+    margin-left: 10px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    color: var(--roxo);
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
 }
 
+#menu a:hover {
+    background-color: var(--roxo);
+    color: var(--branco);
+}
 
+/* ---------- Conteúdo principal ---------- */
 #conteudo {
     flex: 1;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 40px 30px;
 }
 
+#conteudo h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--roxo);
+    margin-bottom: 28px;
+    padding-left: 14px;
+    border-left: 5px solid var(--roxo);
+}
 
+/* Texto solto (página Sobre) */
+#conteudo > p {
+    background-color: var(--branco);
+    padding: 24px 28px;
+    border-radius: var(--raio);
+    border: 1px solid var(--borda);
+    box-shadow: var(--sombra);
+    font-size: 17px;
+}
+
+/* ---------- Lista de produtos (Home) ---------- */
 #produtos {
     display: grid;
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
 }
 
+/* Cada card de produto */
 #produtos div {
-    padding: 15px;
-    border: 1px solid #ccc;
+    padding: 22px;
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+    border-top: 5px solid var(--roxo);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
+#produtos div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(98, 50, 194, 0.18);
+}
 
-#footer {
-    padding: 15px;
-    border-top: 1px solid #ccc;
+#produtos h3 {
+    font-size: 19px;
+    color: var(--texto);
+    margin-bottom: 12px;
+}
+
+#produtos p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: var(--texto-suave);
+}
+
+/* 3º parágrafo do card = Preço (destaque) */
+#produtos p:nth-of-type(3) {
+    margin-top: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--roxo);
+}
+
+/* Aviso quando não há produtos */
+#conteudo #sem-produtos {
     text-align: center;
+    color: var(--texto-suave);
+    border: 2px dashed var(--roxo-claro);
+    box-shadow: none;
+}
+
+/* ---------- Formulário de cadastro ---------- */
+form {
+    max-width: 680px;
+    padding: 36px;
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+/* Esconde os <br> do HTML, o espaçamento fica por conta do CSS */
+form br {
+    display: none;
+}
+
+form label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--texto);
+}
+
+form label:first-of-type {
+    margin-top: 0;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 11px 14px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--texto);
+    background-color: var(--roxo-fundo);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+/* Campo selecionado */
+form input:focus,
+form select:focus {
+    border-color: var(--roxo);
+    background-color: var(--branco);
+    box-shadow: 0 0 0 3px var(--roxo-claro);
+}
+
+form select {
+    cursor: pointer;
+}
+
+/* Botão Salvar */
+form button {
+    width: 100%;
+    margin-top: 28px;
+    padding: 14px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--branco);
+    background-color: var(--roxo);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+form button:hover {
+    background-color: var(--roxo-escuro);
+}
+
+form button:active {
+    transform: scale(0.98);
+}
+
+/* ---------- Rodapé ---------- */
+#footer {
+    padding: 22px;
+    background-color: var(--roxo);
+    color: var(--branco);
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+/* ---------- Celular / telas pequenas ---------- */
+@media (max-width: 600px) {
+    #header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    #menu a {
+        margin: 0 4px;
+        padding: 6px 12px;
+    }
+
+    #conteudo {
+        padding: 28px 16px;
+    }
+
+    form {
+        padding: 24px;
+    }
 }
