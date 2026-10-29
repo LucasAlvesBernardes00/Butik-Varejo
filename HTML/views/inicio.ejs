@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<section id="inicio">
+<h2>Bem-vindo à Butik</h2>
+<p>Sistema de gestão para mercados e lojas de varejo.</p>
+
+<% if (locals.usuario) { %>
+<p>Você entrou como <strong><%= locals.usuario.email %></strong>.</p>
+<div id="inicio-botoes">
+<a class="botao" href="/produtos">Ver produtos</a>
+</div>
+<% } else { %>
+<div id="inicio-botoes">
+<a class="botao" href="/login">Entrar</a>
+<a class="botao botao-contorno" href="/cadastro">Criar conta</a>
+</div>
+<p id="inicio-catalogo"><a href="/produtos">Ver o catálogo de produtos</a></p>
+<% } %>
+</section>
+
+<%- include('partials/footer') %>
