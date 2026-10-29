@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/produtos', (req, res) => {
-    const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoCategoria, p.produtoPreco, p.produtoEstoque, f.fornecedorNome from produto p join fornecedor f on f.fornecedorID = p.produtoFornecedorIDFK;`;
+    const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoCategoria, p.produtoPreco, p.produtoEstoque from produto p`;
     db.query(sqlProdutos, (error, produtos) => {
         if (error) {
             console.log('Erro ao buscar produtos', error);
@@ -162,63 +162,35 @@ app.post('/logout', (req, res) => {
 
 
 app.get('/admin', (req, res) => {
-    res.render('admin');
+    db.query('select fornecedorID, fornecedorNome from fornecedor', (error, fornecedores) => {
+        if (error) {
+            console.log('Erro ao buscar fornecedores', error);
+            return res.status(500).send('Erro interno no servidor.');
+        }
+        res.render('admin', { fornecedores });
+    });
 });
 
 app.post('/admin', (req, res) => {
-    const {
-        fornecedorNome, fornecedorCnpj, fornecedorTelefone,
-        produtoNome, produtoCategoria, produtoEstoque, produtoPreco,
-        clienteNome, clienteCpf, clienteEmail,
-        pedidoData, pedidoValorTotal, pedidoFormaPagamento,
-        itemPedidoQuantidade, itemPedidoPrecoUnitario, itemPedidoSubTotal
-    } = req.body;
+    const { produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK } = req.body;
 
-    const sqlFornecedor = `insert into fornecedor (fornecedorNome, fornecedorCnpj, fornecedorTelefone) values (?, ?, ?);`;
-    db.query(sqlFornecedor, [fornecedorNome, fornecedorCnpj, fornecedorTelefone], (error, resFornecedor) => {
+    if (!produtoNome || !produtoCategoria || !produtoFornecedorIDFK) {
+        return res.status(400).send('Preencha nome, categoria e fornecedor.');
+    }
+
+    const sqlProduto = `insert into produto
+        (produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK)
+        values (?, ?, ?, ?, ?);`;
+
+    db.query(sqlProduto, [produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK], (error) => {
         if (error) {
-            console.log('Erro ao inserir fornecedor', error);
+            console.log('Erro ao inserir produto', error);
             return res.status(500).send('Erro interno no servidor.');
         }
-
-        const fornecedorID = resFornecedor.insertId;
-        const sqlProduto = `insert into produto (produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK) values (?, ?, ?, ?, ?);`;
-        db.query(sqlProduto, [produtoNome, produtoCategoria, produtoEstoque, produtoPreco, fornecedorID], (error, resProduto) => {
-            if (error) {
-                console.log('Erro ao inserir produto', error);
-                return res.status(500).send('Erro interno no servidor.');
-            }
-
-            const produtoID = resProduto.insertId;
-            const sqlCliente = `insert into cliente (clienteNome, clienteCpf, clienteEmail) values (?, ?, ?);`;
-            db.query(sqlCliente, [clienteNome, clienteCpf, clienteEmail], (error, resCliente) => {
-                if (error) {
-                    console.log('Erro ao inserir cliente', error);
-                    return res.status(500).send('Erro interno no servidor.');
-                }
-
-                const clienteID = resCliente.insertId;
-                const sqlPedido = `insert into pedido (pedidoData, pedidoValorTotal, pedidoFormaPagamento, pedidoClienteIDFK) values (?, ?, ?, ?);`;
-                db.query(sqlPedido, [pedidoData, pedidoValorTotal, pedidoFormaPagamento, clienteID], (error, resPedido) => {
-                    if (error) {
-                        console.log('Erro ao inserir pedido', error);
-                        return res.status(500).send('Erro interno no servidor.');
-                    }
-
-                    const pedidoID = resPedido.insertId;
-                    const sqlItemPedido = `insert into itemPedido (itemPedidoQuantidade, itemPedidoPrecoUnitario, itemPedidoSubTotal, itemPedidoPedidoIDFK, itemPedidoProdutoIDFK) values (?, ?, ?, ?, ?);`;
-                    db.query(sqlItemPedido, [itemPedidoQuantidade, itemPedidoPrecoUnitario, itemPedidoSubTotal, pedidoID, produtoID], (error) => {
-                        if (error) {
-                            console.log('Erro ao inserir itemPedido', error);
-                            return res.status(500).send('Erro interno no servidor.');
-                        } console.log('Dados inseridos com sucesso');
-                        res.redirect('/admin');
-                    });
-                });
-            });
-        });
+        res.redirect('/produtos');
     });
 });
+
 
 app.listen(3000, () => {
     console.log('Servidor rodando em http://localhost:3000/');

@@ -3,15 +3,6 @@
 <h2>Cadastro de Produtos</h2>
 <form action="/admin" method="POST">
 
-<label for="fornecedorNome">Nome do Fornecedor:</label><br>
-<input type="text" id="fornecedorNome" name="fornecedorNome"><br><br>
-
-<label for="fornecedorCnpj">CNPJ do Fornecedor:</label><br>
-<input type="text" id="fornecedorCnpj" name="fornecedorCnpj"><br><br>
-
-<label for="fornecedorTelefone">Telefone do Fornecedor:</label><br>
-<input type="text" id="fornecedorTelefone" name="fornecedorTelefone"><br><br>
-
 <label for="produtoNome">Nome do Produto:</label><br>
 <input type="text" id="produtoNome" name="produtoNome"><br><br>
 
@@ -24,37 +15,13 @@
 <label for="produtoPreco">Preço do Produto:</label><br>
 <input type="number" id="produtoPreco" name="produtoPreco"><br><br>
 
-<label for="clienteNome">Nome do Cliente:</label><br>
-<input type="text" id="clienteNome" name="clienteNome"><br><br>
-
-<label for="clienteCpf">CPF do Cliente:</label><br>
-<input type="text" id="clienteCpf" name="clienteCpf"><br><br>
-
-<label for="clienteEmail">E-mail do cliente</label>
-<input type="email" id="clienteEmail" name="clienteEmail" required>
-
-<label for="pedidoData">Data do Pedido:</label><br>
-<input type="date" id="pedidoData" name="pedidoData"><br><br>
-
-<label for="pedidoValorTotal">Valor Total do Pedido:</label><br>
-<input type="number" id="pedidoValorTotal" name="pedidoValorTotal"><br><br>
-
-<label for="pedidoFormaPagamento">Forma de Pagamento:</label><br>
-<select id="pedidoFormaPagamento" name="pedidoFormaPagamento">
-<option value="dinheiro">Dinheiro</option>
-<option value="pix">Pix</option>
-<option value="debito">Débito</option>
-<option value="credito">Crédito</option>
+<label for="produtoFornecedorIDFK">Fornecedor:</label><br>
+<select id="produtoFornecedorIDFK" name="produtoFornecedorIDFK" required>
+    <option value="">Selecione...</option>
+    <% fornecedores.forEach(f => { %>
+        <option value="<%= f.fornecedorID %>"><%= f.fornecedorNome %></option>
+    <% }) %>
 </select><br><br>
-
-<label for="itemPedidoQuantidade">Quantidade do Item:</label><br>
-<input type="number" id="itemPedidoQuantidade" name="itemPedidoQuantidade"><br><br>
-
-<label for="itemPedidoPrecoUnitario">Preço Unitário do Item:</label><br>
-<input type="number" id="itemPedidoPrecoUnitario" name="itemPedidoPrecoUnitario"><br><br>
-
-<label for="itemPedidoSubTotal">Subtotal do Item:</label><br>
-<input type="number" id="itemPedidoSubTotal" name="itemPedidoSubTotal"><br><br>
 
 <button type="submit">Salvar</button>
 </form>
