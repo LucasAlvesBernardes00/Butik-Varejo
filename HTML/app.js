@@ -161,11 +161,11 @@ app.post('/logout', (req, res) => {
 });
 
 
-app.get('/formulario', (req, res) => {
-    res.render('formulario');
+app.get('/admin', (req, res) => {
+    res.render('admin');
 });
 
-app.post('/formulario', (req, res) => {
+app.post('/admin', (req, res) => {
     const {
         fornecedorNome, fornecedorCnpj, fornecedorTelefone,
         produtoNome, produtoCategoria, produtoEstoque, produtoPreco,
@@ -212,7 +212,7 @@ app.post('/formulario', (req, res) => {
                             console.log('Erro ao inserir itemPedido', error);
                             return res.status(500).send('Erro interno no servidor.');
                         } console.log('Dados inseridos com sucesso');
-                        res.redirect('/formulario');
+                        res.redirect('/admin');
                     });
                 });
             });

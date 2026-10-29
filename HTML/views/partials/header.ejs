@@ -13,7 +13,6 @@
 <a href="/">Início</a>
 <a href="/produtos">Produtos</a>
 <a href="/sobre">Sobre</a>
-<a href="/formulario">Cadastro de dados</a>
 <% if (locals.usuario) { %>
 <span id="usuario-logado"><%= locals.usuario.email %></span>
 <form id="form-sair" action="/logout" method="POST">

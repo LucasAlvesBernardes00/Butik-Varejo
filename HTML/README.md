@@ -1,0 +1,1 @@
+Para rodar é necessario o .env com a senha do banco do aiven
