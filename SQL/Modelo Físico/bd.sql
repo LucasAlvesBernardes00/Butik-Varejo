@@ -1,10 +1,3 @@
--- =========================================
--- BUTIK - Banco de dados completo
--- Pode ser executado em um banco novo OU no banco que já existe no Aiven:
--- o "if not exists" pula as tabelas que já foram criadas, sem apagar dados.
--- =========================================
-
--- O db.js conecta no banco "defaultdb" do Aiven, por isso usamos ele aqui.
 create database if not exists defaultdb;
 use defaultdb;
 
@@ -25,7 +18,6 @@ produtoFornecedorIDFK int not null,
 foreign key (produtoFornecedorIDFK) references fornecedor(fornecedorID)
 );
 
--- clienteSenha aceita NULL: o login agora fica na tabela usuario
 create table if not exists cliente (
 clienteID int not null primary key auto_increment,
 clienteNome varchar(50) not null,
@@ -54,16 +46,9 @@ foreign key (itemPedidoPedidoIDFK) references pedido(pedidoID),
 foreign key (itemPedidoProdutoIDFK) references produto(produtoID)
 );
 
--- Entrega 3: contas para login no sistema.
--- usuarioSenhaHash tem 255 caracteres porque o hash do bcrypt tem 60.
 create table if not exists usuario (
 usuarioID int not null primary key auto_increment,
 usuarioEmail varchar(100) not null unique,
 usuarioSenhaHash varchar(255) not null,
 usuarioCriadoEm timestamp not null default current_timestamp
 );
-
--- Para o banco que JÁ EXISTIA no Aiven: a tabela cliente foi criada
--- com clienteSenha "not null". Este comando libera o NULL sem apagar dados.
--- (Em um banco novo ele não muda nada.)
-alter table cliente modify clienteSenha varchar(50) null;
