@@ -242,6 +242,132 @@ form button:active {
     transform: scale(0.98);
 }
 
+/* ---------- Entrega 3: login, cadastro e página inicial ---------- */
+
+/* Menu: deixa os links e o botão Sair na mesma linha */
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* E-mail de quem está logado */
+#usuario-logado {
+    margin-left: 14px;
+    font-size: 14px;
+    color: var(--texto-suave);
+}
+
+/* Formulário do botão Sair: tira o visual de "cartão" dos outros forms */
+#form-sair {
+    max-width: none;
+    margin: 0 0 0 10px;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+#form-sair button {
+    width: auto;
+    margin: 0;
+    padding: 8px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    border-radius: 999px;
+}
+
+/* Formulários de login e cadastro são mais estreitos */
+.form-conta {
+    max-width: 440px;
+}
+
+.form-link {
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--texto-suave);
+}
+
+.form-link a,
+#inicio-catalogo a {
+    color: var(--roxo);
+    font-weight: 500;
+}
+
+/* Mensagens de erro e de sucesso */
+.aviso {
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.aviso-erro {
+    background-color: #fdecec;
+    border: 1px solid #f3b9b9;
+    color: #a12626;
+}
+
+.aviso-sucesso {
+    background-color: #eaf7ee;
+    border: 1px solid #b6e2c3;
+    color: #1f6b37;
+}
+
+/* Página inicial */
+#inicio {
+    max-width: 680px;
+    padding: 36px;
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+#inicio-botoes {
+    display: flex;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+/* Links com cara de botão (mesmo estilo do botão Salvar) */
+.botao {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--branco);
+    background-color: var(--roxo);
+    border: 2px solid var(--roxo);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.botao:hover {
+    background-color: var(--roxo-escuro);
+}
+
+.botao-contorno {
+    color: var(--roxo);
+    background-color: var(--branco);
+}
+
+.botao-contorno:hover {
+    color: var(--branco);
+}
+
+#inicio-catalogo {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 14px;
+}
+
 /* ---------- Rodapé ---------- */
 #footer {
     padding: 22px;
@@ -272,4 +398,17 @@ form button:active {
     form {
         padding: 24px;
     }
-}
+
+    #menu {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    #inicio {
+        padding: 24px;
+    }
+
+    #inicio-botoes {
+        flex-direction: column;
+    }
+}

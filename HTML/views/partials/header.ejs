@@ -10,9 +10,19 @@
 <header id="header">
 <h1 id="logo">Butik</h1>
 <nav id="menu">
-<a href="/">Produtos</a>
+<a href="/">Início</a>
+<a href="/produtos">Produtos</a>
 <a href="/sobre">Sobre</a>
-<a href="/formulario">Cadastro</a>
+<a href="/formulario">Cadastro de dados</a>
+<% if (locals.usuario) { %>
+<span id="usuario-logado"><%= locals.usuario.email %></span>
+<form id="form-sair" action="/logout" method="POST">
+<button type="submit">Sair</button>
+</form>
+<% } else { %>
+<a href="/login">Entrar</a>
+<a href="/cadastro">Criar conta</a>
+<% } %>
 </nav>
 </header>
 
