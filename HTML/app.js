@@ -6,7 +6,6 @@ const db = require('./db');
 
 const app = express();
 
-// O segredo da sessão vem do arquivo .env (nunca escrito no código)
 if (!process.env.SESSION_SECRET) {
     console.log('Erro: defina a variável SESSION_SECRET no arquivo .env');
     process.exit(1);
@@ -16,32 +15,27 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-// Configuração da sessão (precisa vir ANTES das rotas)
 app.use(session({
-    name: 'butik.sid',                  // nome do cookie da sessão
-    secret: process.env.SESSION_SECRET, // segredo usado para assinar o cookie
-    resave: false,                      // não salva a sessão se nada mudou
-    saveUninitialized: false,           // não cria sessão para quem não fez login
+    name: 'butik.sid',                  
+    secret: process.env.SESSION_SECRET, 
+    resave: false,                     
+    saveUninitialized: false,           
     cookie: {
-        httpOnly: true,                 // o JavaScript da página não consegue ler o cookie
+        httpOnly: true,                 
         sameSite: 'lax',
-        maxAge: 1000 * 60 * 60 * 2      // 2 horas
+        maxAge: 1000 * 60 * 60 * 2      
     }
 }));
 
-// Deixa o usuário logado disponível em todas as views (para o menu).
-// Isso NÃO protege nenhuma página, só serve para mostrar os links certos.
 app.use((req, res, next) => {
     res.locals.usuario = req.session.usuario;
     next();
 });
 
-// Página inicial com as opções "Entrar" e "Criar conta"
 app.get('/', (req, res) => {
     res.render('inicio');
 });
 
-// Catálogo de produtos (antes ficava em "/")
 app.get('/produtos', (req, res) => {
     const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoCategoria, p.produtoPreco, p.produtoEstoque, f.fornecedorNome from produto p join fornecedor f on f.fornecedorID = p.produtoFornecedorIDFK;`;
     db.query(sqlProdutos, (error, produtos) => {
@@ -58,8 +52,6 @@ app.get('/produtos', (req, res) => {
 app.get('/sobre', (req, res) => {
     res.render('sobre');
 });
-
-// ---------- Cadastro de conta ----------
 
 app.get('/cadastro', (req, res) => {
     res.render('cadastro', { erro: null, email: '' });
@@ -80,18 +72,16 @@ app.post('/cadastro', (req, res) => {
         return res.status(400).render('cadastro', { erro: 'A senha deve ter entre 6 e 72 caracteres.', email });
     }
 
-    // Gera o hash da senha. O número 10 é o "custo" (quanto maior, mais lento e mais seguro).
     bcrypt.hash(senha, 10, (error, hash) => {
         if (error) {
             console.log('Erro ao gerar hash', error);
             return res.status(500).send('Erro interno no servidor.');
         }
 
-        // Salva SOMENTE o hash, nunca a senha digitada
         const sqlUsuario = `insert into usuario (usuarioEmail, usuarioSenhaHash) values (?, ?);`;
         db.query(sqlUsuario, [email, hash], (error) => {
             if (error) {
-                // A coluna usuarioEmail é UNIQUE: o MySQL avisa quando o e-mail já existe
+
                 if (error.code === 'ER_DUP_ENTRY') {
                     return res.status(409).render('cadastro', { erro: 'Este e-mail já está cadastrado.', email });
                 }
@@ -104,7 +94,6 @@ app.post('/cadastro', (req, res) => {
     });
 });
 
-// ---------- Login ----------
 
 app.get('/login', (req, res) => {
     let mensagem = null;
@@ -122,7 +111,6 @@ app.post('/login', (req, res) => {
         return res.status(400).render('login', { erro: 'Preencha o e-mail e a senha.', mensagem: null, email });
     }
 
-    // Consulta parametrizada (o "?" evita SQL Injection)
     const sqlBusca = `select usuarioID, usuarioEmail, usuarioSenhaHash from usuario where usuarioEmail = ?;`;
     db.query(sqlBusca, [email], (error, usuarios) => {
         if (error) {
@@ -130,8 +118,6 @@ app.post('/login', (req, res) => {
             return res.status(500).send('Erro interno no servidor.');
         }
 
-        // A mesma mensagem para "e-mail não existe" e "senha errada",
-        // assim ninguém descobre quais e-mails estão cadastrados.
         const mensagemErro = 'E-mail ou senha incorretos.';
 
         if (usuarios.length === 0) {
@@ -140,7 +126,6 @@ app.post('/login', (req, res) => {
 
         const usuario = usuarios[0];
 
-        // Compara a senha digitada com o hash salvo no banco
         bcrypt.compare(senha, usuario.usuarioSenhaHash, (error, senhaCorreta) => {
             if (error) {
                 console.log('Erro ao comparar senha', error);
@@ -150,20 +135,17 @@ app.post('/login', (req, res) => {
                 return res.status(401).render('login', { erro: mensagemErro, mensagem: null, email });
             }
 
-            // Cria uma sessão nova (troca o ID da sessão antiga por segurança)
             req.session.regenerate((error) => {
                 if (error) {
                     console.log('Erro ao criar sessão', error);
                     return res.status(500).send('Erro interno no servidor.');
                 }
 
-                // Guarda só o necessário. Nada de senha ou hash na sessão!
                 req.session.usuario = {
                     id: usuario.usuarioID,
                     email: usuario.usuarioEmail
                 };
 
-                // Garante que a sessão foi salva antes de redirecionar
                 req.session.save((error) => {
                     if (error) {
                         console.log('Erro ao salvar sessão', error);
@@ -176,7 +158,6 @@ app.post('/login', (req, res) => {
     });
 });
 
-// ---------- Logout ----------
 
 app.post('/logout', (req, res) => {
     req.session.destroy((error) => {
@@ -184,19 +165,17 @@ app.post('/logout', (req, res) => {
             console.log('Erro ao encerrar sessão', error);
             return res.status(500).send('Erro interno no servidor.');
         }
-        res.clearCookie('butik.sid'); // mesmo nome definido em "name" na configuração
+        res.clearCookie('butik.sid'); 
         res.redirect('/');
     });
 });
 
-// ---------- Formulário de dados comerciais ----------
 
 app.get('/formulario', (req, res) => {
     res.render('formulario');
 });
 
 app.post('/formulario', (req, res) => {
-    // A senha do cliente não é mais coletada aqui: login e senha ficam na tabela usuario
     const {
         fornecedorNome, fornecedorCnpj, fornecedorTelefone,
         produtoNome, produtoCategoria, produtoEstoque, produtoPreco,
