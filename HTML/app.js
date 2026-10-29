@@ -6,11 +6,6 @@ const db = require('./db');
 
 const app = express();
 
-if (!process.env.SESSION_SECRET) {
-    console.log('Erro: defina a variável SESSION_SECRET no arquivo .env');
-    process.exit(1);
-}
-
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -20,11 +15,6 @@ app.use(session({
     secret: process.env.SESSION_SECRET, 
     resave: false,                     
     saveUninitialized: false,           
-    cookie: {
-        httpOnly: true,                 
-        sameSite: 'lax',
-        maxAge: 1000 * 60 * 60 * 2      
-    }
 }));
 
 app.use((req, res, next) => {
@@ -61,7 +51,7 @@ app.post('/cadastro', (req, res) => {
     const email = (req.body.email || '').trim().toLowerCase();
     const senha = req.body.senha || '';
 
-    // Validação no servidor (não dá para confiar só no "required" do HTML)
+
     if (!email || !senha) {
         return res.status(400).render('cadastro', { erro: 'Preencha o e-mail e a senha.', email });
     }
