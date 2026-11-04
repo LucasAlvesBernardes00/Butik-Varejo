@@ -26,4 +26,30 @@
 <button type="submit">Salvar</button>
 </form>
 
+<h2>Produtos cadastrados</h2>
+<table>
+<tr>
+<th>Nome</th>
+<th>Categoria</th>
+<th>Preço</th>
+<th>Estoque</th>
+<th>Ações</th>
+</tr>
+<% produtos.forEach(p => { %>
+<tr>
+<td><%= p.produtoNome %></td>
+<td><%= p.produtoCategoria %></td>
+<td>R$ <%= p.produtoPreco %></td>
+<td><%= p.produtoEstoque %></td>
+<td>
+<a href="/admin/produto/<%= p.produtoID %>/editar">Editar</a>
+
+<form action="/admin/produto/<%= p.produtoID %>/excluir" method="POST" style="display:inline">
+<button type="submit">Excluir</button>
+</form>
+</td>
+</tr>
+<% }) %>
+</table>
+
 <%- include('partials/footer') %>

@@ -162,12 +162,19 @@ app.post('/logout', (req, res) => {
 
 
 app.get('/admin', (req, res) => {
-    db.query('select fornecedorID, fornecedorNome from fornecedor', (error, fornecedores) => {
+      db.query('select fornecedorID, fornecedorNome from fornecedor', (error, fornecedores) => {
         if (error) {
             console.log('Erro ao buscar fornecedores', error);
             return res.status(500).send('Erro interno no servidor.');
         }
-        res.render('admin', { fornecedores });
+
+        db.query('select produtoID, produtoNome, produtoCategoria, produtoPreco, produtoEstoque from produto', (error, produtos) => {
+            if (error) {
+                console.log('Erro ao buscar produtos', error);
+                return res.status(500).send('Erro interno no servidor.');
+            }
+            res.render('admin', { fornecedores, produtos });
+        });
     });
 });
 
@@ -229,6 +236,45 @@ app.post('/admin/fornecedor', (req, res) => {
             return res.status(500).send('Erro interno no servidor.');
         }
         res.redirect('/fornecedores');
+    });
+});
+app.get('/admin/produto/:id/editar', (req, res) => {
+    if (!req.session.usuario) {
+        return res.redirect('/login');
+    }
+
+    db.query('select * from produto where produtoID = ?', [req.params.id], (error, produtos) => {
+        if (error) {
+            console.log('Erro ao buscar produto', error);
+            return res.status(500).send('Erro interno no servidor.');
+        }
+        const produto = produtos[0];
+        res.render('editar-produto', { produto });
+    });
+});
+
+app.post('/admin/produto/:id/editar', (req, res) => {
+    const { produtoNome, produtoCategoria, produtoEstoque, produtoPreco } = req.body;
+    const sqlUpdate = `update produto
+        set produtoNome = ?, produtoCategoria = ?, produtoEstoque = ?, produtoPreco = ?
+        where produtoID = ?;`;
+
+    db.query(sqlUpdate, [produtoNome, produtoCategoria, produtoEstoque, produtoPreco, req.params.id], (error) => {
+        if (error) {
+            console.log('Erro ao atualizar produto', error);
+            return res.status(500).send('Erro interno no servidor.');
+        }
+        res.redirect('/admin');
+    });
+});
+
+app.post('/admin/produto/:id/excluir', (req, res) => {
+    db.query('delete from produto where produtoID = ?', [req.params.id], (error) => {
+        if (error) {
+            console.log('Erro ao excluir produto', error);
+            return res.status(500).send('Erro interno no servidor.');
+        }
+        res.redirect('/admin');
     });
 });
 

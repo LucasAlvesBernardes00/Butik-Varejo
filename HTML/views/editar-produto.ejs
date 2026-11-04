@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<h2>Editar Produto</h2>
+<form action="/admin/produto/<%= produto.produtoID %>/editar" method="POST">
+
+<label for="produtoNome">Nome do Produto:</label><br>
+<input type="text" id="produtoNome" name="produtoNome" value="<%= produto.produtoNome %>"><br><br>
+
+<label for="produtoCategoria">Categoria do Produto:</label><br>
+<input type="text" id="produtoCategoria" name="produtoCategoria" value="<%= produto.produtoCategoria %>"><br><br>
+
+<label for="produtoEstoque">Estoque do Produto:</label><br>
+<input type="number" id="produtoEstoque" name="produtoEstoque" value="<%= produto.produtoEstoque %>"><br><br>
+
+<label for="produtoPreco">Preço do Produto:</label><br>
+<input type="number" step="0.01" id="produtoPreco" name="produtoPreco" value="<%= produto.produtoPreco %>"><br><br>
+
+<button type="submit">Salvar alterações</button>
+</form>
+
+<%- include('partials/footer') %>
