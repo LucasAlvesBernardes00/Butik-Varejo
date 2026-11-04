@@ -11,10 +11,10 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-    name: 'butik.sid',                  
-    secret: process.env.SESSION_SECRET, 
-    resave: false,                     
-    saveUninitialized: false,           
+    name: 'butik.sid',
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
 }));
 
 app.use((req, res, next) => {
@@ -34,7 +34,7 @@ app.get('/produtos', (req, res) => {
             return res.status(500).send('Erro interno no servidor.');
         }
 
-        res.render('home', { produtos });
+        res.render('produtos', { produtos });
 
     });
 });
@@ -155,7 +155,7 @@ app.post('/logout', (req, res) => {
             console.log('Erro ao encerrar sessão', error);
             return res.status(500).send('Erro interno no servidor.');
         }
-        res.clearCookie('butik.sid'); 
+        res.clearCookie('butik.sid');
         res.redirect('/');
     });
 });
@@ -191,6 +191,46 @@ app.post('/admin', (req, res) => {
     });
 });
 
+app.get('/fornecedores', (req, res) => {
+    const sqlFornecedores = `select fornecedorID, fornecedorNome, fornecedorCnpj, fornecedorTelefone from fornecedor`;
+    db.query(sqlFornecedores, (error, fornecedores) => {
+        if (error) {
+        console.log('Erro ao buscar fornecedores', error);
+        return res.status(500).send('Erro interno no servidor.');
+        }
+        res.render('fornecedores', { fornecedores });
+    });
+});
+
+app.get('/admin/fornecedor', (req, res) => {
+    if (!req.session.usuario) {
+        return res.redirect('/login');
+    }
+    res.render('admin-fornecedor');
+});
+
+app.post('/admin/fornecedor', (req, res) => {
+    if (!req.session.usuario) {
+        return res.redirect('/login');
+    }
+    const { fornecedorNome, fornecedorCnpj, fornecedorTelefone } = req.body;
+
+    if (!fornecedorNome || !fornecedorCnpj || !fornecedorTelefone) {
+        return res.status(400).send('Preencha nome, CNPJ e telefone.');
+    }
+
+    const sqlFornecedor = `insert into fornecedor
+        (fornecedorNome, fornecedorCnpj, fornecedorTelefone)
+        values (?, ?, ?);`;
+
+    db.query(sqlFornecedor, [fornecedorNome, fornecedorCnpj, fornecedorTelefone], (error) => {
+        if (error) {
+            console.log('Erro ao inserir fornecedor', error);
+            return res.status(500).send('Erro interno no servidor.');
+        }
+        res.redirect('/fornecedores');
+    });
+});
 
 app.listen(3000, () => {
     console.log('Servidor rodando em http://localhost:3000/');

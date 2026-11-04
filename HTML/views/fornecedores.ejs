@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<h2>Fornecedores</h2>
+<a href="/admin/fornecedor">+ Novo fornecedor</a>
+
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>CNPJ</th>
+        <th>Telefone</th>
+    </tr>
+    <% fornecedores.forEach(f => { %>
+    <tr>
+        <td><%= f.fornecedorNome %></td>
+        <td><%= f.fornecedorCnpj %></td>
+        <td><%= f.fornecedorTelefone %></td>
+    </tr>
+    <% }) %>
+</table>
+
+<%- include('partials/footer') %>
