@@ -46,44 +46,62 @@ h1, h2, h3 {
     margin-top: 0;
 }
 
-/* ---------- Cabeçalho ---------- */
+/* ---------- Cabeçalho (banner com a logo + barra de menu roxa) ---------- */
 #header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    padding: 18px 40px;
-    background-color: var(--branco);
-    border-bottom: 3px solid var(--roxo);
+    flex-direction: column;
+    align-items: stretch;
+    /* Fundo claro com dois "brilhos" roxos suaves nos cantos */
+    background:
+        radial-gradient(circle at 10% 0%, var(--roxo-claro) 0, transparent 40%),
+        radial-gradient(circle at 90% 100%, var(--roxo-claro) 0, transparent 40%),
+        var(--branco);
     box-shadow: var(--sombra);
-    position: sticky;
-    top: 0;
-    z-index: 10;
 }
 
+/* Área do banner onde fica a logo */
 #logo {
     margin: 0;
-    font-size: 32px;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--roxo);
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    padding: 28px 20px 24px;
+    line-height: 0;
+    text-align: center;
 }
 
-/* Menu: links, e-mail e botão Sair na mesma linha, alinhados ao centro */
+#logo a {
+    display: inline-block;
+}
+
+/* A imagem original é quadrada com bastante branco em volta:
+   o object-fit corta as sobras e mostra só a logo */
+#logo img {
+    display: block;
+    width: 420px;
+    max-width: 100%;
+    height: 146px;
+    object-fit: cover;
+    mix-blend-mode: multiply; /* some o fundo branco da imagem sobre o degradê */
+    transition: transform 0.2s;
+}
+
+#logo a:hover img {
+    transform: scale(1.03);
+}
+
+/* Menu: barra roxa logo abaixo do banner, itens centralizados */
 #menu {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 6px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, var(--roxo-escuro), var(--roxo), var(--roxo-escuro));
 }
 
 #menu a {
     padding: 8px 18px;
     border-radius: 999px;
-    color: var(--roxo);
+    color: var(--branco);
     font-weight: 500;
     line-height: 1.4;
     text-decoration: none;
@@ -91,15 +109,15 @@ h1, h2, h3 {
 }
 
 #menu a:hover {
-    background-color: var(--roxo);
-    color: var(--branco);
+    background-color: var(--branco);
+    color: var(--roxo);
 }
 
 /* E-mail de quem está logado */
 #usuario-logado {
     margin-left: 8px;
     font-size: 14px;
-    color: var(--texto-suave);
+    color: var(--roxo-claro);
 }
 
 /* ---------- Conteúdo principal ---------- */
@@ -314,7 +332,14 @@ form button:active {
     line-height: 1.4;
     letter-spacing: 0;
     text-transform: none;
+    color: var(--roxo);
+    background-color: var(--branco);
     border-radius: 999px;
+}
+
+#form-sair button:hover {
+    color: var(--branco);
+    background-color: var(--roxo-escuro);
 }
 
 /* Formulários de login e cadastro são mais estreitos */
@@ -539,10 +564,17 @@ td form button:hover {
 
 /* ---------- Celular / telas pequenas ---------- */
 @media (max-width: 760px) {
-    #header {
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px;
+    #logo {
+        padding: 18px 16px 14px;
+    }
+
+    #logo img {
+        width: 260px;
+        height: 90px;
+    }
+
+    #menu {
+        padding: 8px 10px;
     }
 
     #menu a {
