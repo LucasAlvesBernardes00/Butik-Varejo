@@ -16,6 +16,8 @@
     --texto: #2b2140;         /* texto principal */
     --texto-suave: #6b6480;   /* texto secundário */
     --borda: #e6dff5;
+    --vermelho: #c0392b;      /* botão Excluir */
+    --vermelho-fundo: #fdecec;
     --sombra: 0 4px 14px rgba(98, 50, 194, 0.10);
     --raio: 12px;             /* arredondamento padrão */
 }
@@ -49,6 +51,7 @@ h1, h2, h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
     padding: 18px 40px;
     background-color: var(--branco);
     border-bottom: 3px solid var(--roxo);
@@ -62,18 +65,27 @@ h1, h2, h3 {
     margin: 0;
     font-size: 32px;
     font-weight: 800;
+    line-height: 1;
     color: var(--roxo);
     text-transform: uppercase;
     letter-spacing: 2px;
 }
 
-/* Menu de navegação */
+/* Menu: links, e-mail e botão Sair na mesma linha, alinhados ao centro */
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
 #menu a {
-    margin-left: 10px;
     padding: 8px 18px;
     border-radius: 999px;
     color: var(--roxo);
     font-weight: 500;
+    line-height: 1.4;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
 }
@@ -83,44 +95,82 @@ h1, h2, h3 {
     color: var(--branco);
 }
 
+/* E-mail de quem está logado */
+#usuario-logado {
+    margin-left: 8px;
+    font-size: 14px;
+    color: var(--texto-suave);
+}
+
 /* ---------- Conteúdo principal ---------- */
 #conteudo {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
     padding: 40px 30px;
 }
 
+/* Título da página: centralizado com um traço roxo embaixo */
 #conteudo h2 {
     font-size: 28px;
     font-weight: 600;
     color: var(--roxo);
-    margin-bottom: 28px;
-    padding-left: 14px;
-    border-left: 5px solid var(--roxo);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+#conteudo h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    margin: 10px auto 0;
+    border-radius: 999px;
+    background-color: var(--roxo);
+}
+
+/* Segundo título da mesma página (ex.: "Produtos cadastrados") */
+#conteudo form + h2 {
+    margin-top: 48px;
 }
 
 /* Texto solto (página Sobre) */
 #conteudo > p {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
     background-color: var(--branco);
     padding: 24px 28px;
     border-radius: var(--raio);
     border: 1px solid var(--borda);
     box-shadow: var(--sombra);
     font-size: 17px;
+    text-align: center;
 }
 
-/* ---------- Lista de produtos (Home) ---------- */
+/* ---------- Lista de produtos ---------- */
+/* Flex com justify-content: center para os cards ficarem
+   sempre centralizados, mesmo quando a última linha não está cheia */
 #produtos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 24px;
+    width: 100%;
 }
 
 /* Cada card de produto */
 #produtos div {
-    padding: 22px;
+    flex: 0 1 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 22px;
+    text-align: center;
     background-color: var(--branco);
     border: 1px solid var(--borda);
     border-top: 5px solid var(--roxo);
@@ -146,8 +196,9 @@ h1, h2, h3 {
     color: var(--texto-suave);
 }
 
-/* 3º parágrafo do card = Preço (destaque) */
-#produtos p:nth-of-type(3) {
+/* 2º parágrafo do card = Preço (destaque) */
+#produtos p:nth-of-type(2) {
+    order: 1;
     margin-top: 12px;
     font-size: 20px;
     font-weight: 600;
@@ -156,15 +207,16 @@ h1, h2, h3 {
 
 /* Aviso quando não há produtos */
 #conteudo #sem-produtos {
-    text-align: center;
     color: var(--texto-suave);
     border: 2px dashed var(--roxo-claro);
     box-shadow: none;
 }
 
-/* ---------- Formulário de cadastro ---------- */
+/* ---------- Formulários ---------- */
 form {
+    width: 100%;
     max-width: 680px;
+    margin: 0 auto;
     padding: 36px;
     background-color: var(--branco);
     border: 1px solid var(--borda);
@@ -242,26 +294,11 @@ form button:active {
     transform: scale(0.98);
 }
 
-/* ---------- Entrega 3: login, cadastro e página inicial ---------- */
-
-/* Menu: deixa os links e o botão Sair na mesma linha */
-#menu {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-/* E-mail de quem está logado */
-#usuario-logado {
-    margin-left: 14px;
-    font-size: 14px;
-    color: var(--texto-suave);
-}
-
 /* Formulário do botão Sair: tira o visual de "cartão" dos outros forms */
 #form-sair {
+    width: auto;
     max-width: none;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 4px;
     padding: 0;
     background: none;
     border: none;
@@ -274,6 +311,7 @@ form button:active {
     padding: 8px 18px;
     font-size: 15px;
     font-weight: 500;
+    line-height: 1.4;
     letter-spacing: 0;
     text-transform: none;
     border-radius: 999px;
@@ -303,6 +341,7 @@ form button:active {
     padding: 12px 14px;
     border-radius: 8px;
     font-size: 14px;
+    text-align: center;
 }
 
 .aviso-erro {
@@ -317,25 +356,34 @@ form button:active {
     color: #1f6b37;
 }
 
-/* Página inicial */
+/* ---------- Página inicial ---------- */
 #inicio {
+    width: 100%;
     max-width: 680px;
-    padding: 36px;
+    margin: 0 auto;
+    padding: 40px 36px;
+    text-align: center;
     background-color: var(--branco);
     border: 1px solid var(--borda);
     border-radius: var(--raio);
     box-shadow: var(--sombra);
 }
 
+#inicio p {
+    margin: 0 0 8px;
+    color: var(--texto-suave);
+}
+
 #inicio-botoes {
     display: flex;
+    justify-content: center;
     gap: 14px;
     margin-top: 24px;
 }
 
 /* Links com cara de botão (mesmo estilo do botão Salvar) */
 .botao {
-    flex: 1;
+    flex: 0 1 220px;
     padding: 14px;
     text-align: center;
     font-weight: 600;
@@ -362,10 +410,121 @@ form button:active {
     color: var(--branco);
 }
 
-#inicio-catalogo {
+#inicio #inicio-catalogo {
     margin: 20px 0 0;
-    text-align: center;
     font-size: 14px;
+}
+
+/* ---------- Gestão: tabelas de produtos e fornecedores ---------- */
+
+/* Link "+ Novo fornecedor" com cara de botão, centralizado */
+#conteudo > a {
+    display: inline-block;
+    margin: 0 auto 28px;
+    padding: 10px 24px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--branco);
+    background-color: var(--roxo);
+    border-radius: 999px;
+    transition: background-color 0.2s;
+}
+
+#conteudo > a:hover {
+    background-color: var(--roxo-escuro);
+}
+
+table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 14px 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--branco);
+    background-color: var(--roxo);
+}
+
+td {
+    font-size: 15px;
+    border-top: 1px solid var(--borda);
+}
+
+tr:nth-child(odd) td {
+    background-color: #fbf9fe;
+}
+
+tr:hover td {
+    background-color: var(--roxo-fundo);
+}
+
+/* Botões Editar e Excluir lado a lado na coluna Ações */
+td a,
+td form button {
+    display: inline-block;
+    margin: 2px 4px;
+    padding: 6px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+td a {
+    color: var(--roxo);
+    border: 1px solid var(--roxo);
+}
+
+td a:hover {
+    color: var(--branco);
+    background-color: var(--roxo);
+}
+
+/* Formulário do botão Excluir: sem visual de "cartão" */
+td form {
+    display: inline;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+td form button {
+    width: auto;
+    color: var(--vermelho);
+    background-color: var(--branco);
+    border: 1px solid var(--vermelho);
+}
+
+td form button:hover {
+    color: var(--branco);
+    background-color: var(--vermelho);
 }
 
 /* ---------- Rodapé ---------- */
@@ -379,7 +538,7 @@ form button:active {
 }
 
 /* ---------- Celular / telas pequenas ---------- */
-@media (max-width: 600px) {
+@media (max-width: 760px) {
     #header {
         flex-direction: column;
         gap: 12px;
@@ -387,7 +546,6 @@ form button:active {
     }
 
     #menu a {
-        margin: 0 4px;
         padding: 6px 12px;
     }
 
@@ -399,16 +557,28 @@ form button:active {
         padding: 24px;
     }
 
-    #menu {
-        justify-content: center;
-        gap: 6px;
-    }
-
     #inicio {
-        padding: 24px;
+        padding: 28px 20px;
     }
 
     #inicio-botoes {
         flex-direction: column;
+        align-items: stretch;
     }
-}
+
+    .botao {
+        flex: none;
+    }
+
+    /* Tabela rola para o lado em vez de estourar a tela */
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    th,
+    td {
+        padding: 10px 12px;
+        white-space: nowrap;
+    }
+}
