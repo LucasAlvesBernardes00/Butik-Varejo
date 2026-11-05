@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/produtos', (req, res) => {
-    const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoCategoria, p.produtoPreco, p.produtoEstoque from produto p`;
+    const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoFoto ,p.produtoCategoria, p.produtoPreco, p.produtoEstoque from produto p`;
     db.query(sqlProdutos, (error, produtos) => {
         if (error) {
             console.log('Erro ao buscar produtos', error);
@@ -168,7 +168,7 @@ app.get('/admin', (req, res) => {
             return res.status(500).send('Erro interno no servidor.');
         }
 
-        db.query('select produtoID, produtoNome, produtoCategoria, produtoPreco, produtoEstoque from produto', (error, produtos) => {
+        db.query('select produtoID, produtoNome, produtoFoto, produtoCategoria, produtoPreco, produtoEstoque from produto', (error, produtos) => {
             if (error) {
                 console.log('Erro ao buscar produtos', error);
                 return res.status(500).send('Erro interno no servidor.');
@@ -179,17 +179,17 @@ app.get('/admin', (req, res) => {
 });
 
 app.post('/admin', (req, res) => {
-    const { produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK } = req.body;
+    const { produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK } = req.body;
 
     if (!produtoNome || !produtoCategoria || !produtoFornecedorIDFK) {
         return res.status(400).send('Preencha nome, categoria e fornecedor.');
     }
 
     const sqlProduto = `insert into produto
-        (produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK)
-        values (?, ?, ?, ?, ?);`;
+        (produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK)
+        values (?, ?, ?, ?, ?, ?);`;
 
-    db.query(sqlProduto, [produtoNome, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK], (error) => {
+    db.query(sqlProduto, [produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK], (error) => {
         if (error) {
             console.log('Erro ao inserir produto', error);
             return res.status(500).send('Erro interno no servidor.');
@@ -254,12 +254,12 @@ app.get('/admin/produto/:id/editar', (req, res) => {
 });
 
 app.post('/admin/produto/:id/editar', (req, res) => {
-    const { produtoNome, produtoCategoria, produtoEstoque, produtoPreco } = req.body;
+    const { produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco } = req.body;
     const sqlUpdate = `update produto
-        set produtoNome = ?, produtoCategoria = ?, produtoEstoque = ?, produtoPreco = ?
+        set produtoNome = ?, produtoFoto = ?, produtoCategoria = ?, produtoEstoque = ?, produtoPreco = ?
         where produtoID = ?;`;
 
-    db.query(sqlUpdate, [produtoNome, produtoCategoria, produtoEstoque, produtoPreco, req.params.id], (error) => {
+    db.query(sqlUpdate, [produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco, req.params.id], (error) => {
         if (error) {
             console.log('Erro ao atualizar produto', error);
             return res.status(500).send('Erro interno no servidor.');

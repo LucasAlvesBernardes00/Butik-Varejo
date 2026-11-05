@@ -6,6 +6,9 @@
 <label for="produtoNome">Nome do Produto:</label><br>
 <input type="text" id="produtoNome" name="produtoNome"><br><br>
 
+<label for="produtoFoto">Foto do Produto:</label><br>
+<input type="text" id="produtoFoto" name="produtoFoto"><br><br>
+
 <label for="produtoCategoria">Categoria do Produto:</label><br>
 <input type="text" id="produtoCategoria" name="produtoCategoria"><br><br>
 
@@ -30,6 +33,7 @@
 <table>
 <tr>
 <th>Nome</th>
+<th>Foto</th>
 <th>Categoria</th>
 <th>Preço</th>
 <th>Estoque</th>
@@ -38,6 +42,7 @@
 <% produtos.forEach(p => { %>
 <tr>
 <td><%= p.produtoNome %></td>
+<td><%= p.produtoFoto %></td>
 <td><%= p.produtoCategoria %></td>
 <td>R$ <%= p.produtoPreco %></td>
 <td><%= p.produtoEstoque %></td>

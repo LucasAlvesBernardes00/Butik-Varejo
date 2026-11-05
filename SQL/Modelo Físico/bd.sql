@@ -11,6 +11,7 @@ fornecedorTelefone varchar(20) not null
 create table if not exists produto (
 produtoID int primary key auto_increment not null,
 produtoNome varchar(100) not null,
+produtoFoto varchar(500),
 produtoCategoria varchar(100) not null,
 produtoEstoque int not null,
 produtoPreco decimal(10,2) not null,
@@ -50,5 +51,6 @@ create table if not exists usuario (
 usuarioID int not null primary key auto_increment,
 usuarioEmail varchar(100) not null unique,
 usuarioSenhaHash varchar(255) not null,
+usuarioSaldo decimal(10,2),
 usuarioCriadoEm timestamp not null default current_timestamp
 );
