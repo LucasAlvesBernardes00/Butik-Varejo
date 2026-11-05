@@ -97,7 +97,12 @@ h1, h2, h3 {
     padding: 10px 20px;
     background: linear-gradient(90deg, var(--roxo-escuro), var(--roxo), var(--roxo-escuro));
 }
-
+.produto-foto {
+  width: 100%;
+  max-width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
 #menu a {
     padding: 8px 18px;
     border-radius: 999px;

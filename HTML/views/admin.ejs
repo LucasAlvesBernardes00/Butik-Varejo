@@ -42,7 +42,11 @@
 <% produtos.forEach(p => { %>
 <tr>
 <td><%= p.produtoNome %></td>
-<td><%= p.produtoFoto %></td>
+<td>
+<% if (p.produtoFoto) { %>
+<img src="<%= p.produtoFoto %>" alt="" width="60">
+<% } %>
+</td>
 <td><%= p.produtoCategoria %></td>
 <td>R$ <%= p.produtoPreco %></td>
 <td><%= p.produtoEstoque %></td>
