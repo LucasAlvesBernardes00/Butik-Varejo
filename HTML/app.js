@@ -296,6 +296,6 @@ app.post('/comprar/:id', (req, res) => {
     db.query(sql, [req.session.usuario.id, req.params.id], () => res.redirect('/produtos'));
 });
 
-app.listen(3000, () => {
-    console.log('Servidor rodando em http://localhost:3000/');
-})
+app.listen(process.env.PORT || 3000, () => {
+    console.log('Servidor rodando');
+});
