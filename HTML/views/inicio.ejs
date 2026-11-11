@@ -6,6 +6,11 @@
 
 <% if (locals.usuario) { %>
 <p>Você entrou como <strong><%= locals.usuario.email %></strong>.</p>
+<form action="/saldo" method="POST">
+<input type="number" step="0.01" name="valor" placeholder="Ex: 50 ou -20" required>
+<button type="submit">Atualizar saldo</button>
+</form>
+<p>Saldo: R$ <%= Number(saldo).toFixed(2) %></p>
 <div id="inicio-botoes">
 <a class="botao" href="/produtos">Ver produtos</a>
 </div>

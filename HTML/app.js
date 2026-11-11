@@ -23,19 +23,19 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.render('inicio');
+    if (!req.session.usuario) return res.render('inicio', { saldo: 0 });
+    db.query('select usuarioSaldo from usuario where usuarioID = ?', [req.session.usuario.id], (erro, r) => {
+        res.render('inicio', { saldo: r[0].usuarioSaldo });
+    });
 });
 
 app.get('/produtos', (req, res) => {
-    const sqlProdutos = `select p.produtoID, p.produtoNome, p.produtoFoto ,p.produtoCategoria, p.produtoPreco, p.produtoEstoque from produto p`;
-    db.query(sqlProdutos, (error, produtos) => {
+    db.query('select produtoID, produtoNome, produtoFoto, produtoCategoria, produtoPreco, produtoEstoque from produto', (error, produtos) => {
         if (error) {
             console.log('Erro ao buscar produtos', error);
             return res.status(500).send('Erro interno no servidor.');
         }
-
         res.render('produtos', { produtos });
-
     });
 });
 
@@ -276,6 +276,24 @@ app.post('/admin/produto/:id/excluir', (req, res) => {
         }
         res.redirect('/admin');
     });
+});
+
+app.post('/saldo', (req, res) => {
+    const valor = parseFloat(req.body.valor);
+    db.query(
+        'update usuario set usuarioSaldo = usuarioSaldo + ? where usuarioID = ? and usuarioSaldo + ? >= 0',
+        [valor, req.session.usuario.id, valor],
+        () => res.redirect('/')
+    );
+}); 
+
+app.post('/comprar/:id', (req, res) => {
+    const sql = `update usuario u, produto p
+        set u.usuarioSaldo = u.usuarioSaldo - p.produtoPreco,
+            p.produtoEstoque = p.produtoEstoque - 1
+        where u.usuarioID = ? and p.produtoID = ?
+          and p.produtoEstoque > 0 and u.usuarioSaldo >= p.produtoPreco`;
+    db.query(sql, [req.session.usuario.id, req.params.id], () => res.redirect('/produtos'));
 });
 
 app.listen(3000, () => {

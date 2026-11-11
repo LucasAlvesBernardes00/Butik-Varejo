@@ -13,6 +13,11 @@
         <p>Categoria: <%= p.produtoCategoria %></p>
         <p>Preço: R$ <%= p.produtoPreco %></p>
         <p>Estoque: <%= p.produtoEstoque %></p>
+        <% if (locals.usuario) { %>
+        <form action="/comprar/<%= p.produtoID %>" method="POST">
+        <button type="submit">Comprar</button>
+        </form>
+<% } %>
       </div>
     <% }) %>
   </div>
