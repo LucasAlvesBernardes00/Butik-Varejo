@@ -101,7 +101,7 @@ app.post('/login', (req, res) => {
         return res.status(400).render('login', { erro: 'Preencha o e-mail e a senha.', mensagem: null, email });
     }
 
-    const sqlBusca = `select usuarioID, usuarioEmail, usuarioSenhaHash from usuario where usuarioEmail = ?;`;
+    const sqlBusca = `select usuarioID, usuarioEmail, usuarioSenhaHash, usuarioTipo from usuario where usuarioEmail = ?;`;
     db.query(sqlBusca, [email], (error, usuarios) => {
         if (error) {
             console.log('Erro ao buscar usuário', error);
@@ -133,8 +133,9 @@ app.post('/login', (req, res) => {
 
                 req.session.usuario = {
                     id: usuario.usuarioID,
-                    email: usuario.usuarioEmail
-                };
+                    email: usuario.usuarioEmail,
+                    tipo: usuario.usuarioTipo
+                    };
 
                 req.session.save((error) => {
                     if (error) {
@@ -162,23 +163,33 @@ app.post('/logout', (req, res) => {
 
 
 app.get('/admin', (req, res) => {
-      db.query('select fornecedorID, fornecedorNome from fornecedor', (error, fornecedores) => {
-        if (error) {
-            console.log('Erro ao buscar fornecedores', error);
-            return res.status(500).send('Erro interno no servidor.');
-        }
+    if (!req.session.usuario || req.session.usuario.tipo !== 'admin') return res.status(403).send('Acesso negado.');
+
+    db.query('select fornecedorID, fornecedorNome from fornecedor', (error, fornecedores) => {
+        if (error) return res.status(500).send('Erro interno no servidor.');
 
         db.query('select produtoID, produtoNome, produtoFoto, produtoCategoria, produtoPreco, produtoEstoque from produto', (error, produtos) => {
-            if (error) {
-                console.log('Erro ao buscar produtos', error);
-                return res.status(500).send('Erro interno no servidor.');
-            }
-            res.render('admin', { fornecedores, produtos });
+            if (error) return res.status(500).send('Erro interno no servidor.');
+
+            db.query('select usuarioID, usuarioEmail, usuarioTipo from usuario', (error, usuarios) => {
+                if (error) return res.status(500).send('Erro interno no servidor.');
+                res.render('admin', { fornecedores, produtos, usuarios });
+            });
         });
     });
 });
 
+app.post('/admin/usuario/:id/tipo', (req, res) => {
+    if (!req.session.usuario || req.session.usuario.tipo !== 'admin') return res.status(403).send('Acesso negado.');
+
+    const tipo = req.body.tipo === 'admin' ? 'admin' : 'cliente';
+    db.query('update usuario set usuarioTipo = ? where usuarioID = ? and usuarioID <> ?',
+        [tipo, req.params.id, req.session.usuario.id],
+        () => res.redirect('/admin'));
+});
+
 app.post('/admin', (req, res) => {
+    if (!req.session.usuario || req.session.usuario.tipo !== 'admin') return res.status(403).send('Acesso negado.');
     const { produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco, produtoFornecedorIDFK } = req.body;
 
     if (!produtoNome || !produtoCategoria || !produtoFornecedorIDFK) {
@@ -239,6 +250,7 @@ app.post('/admin/fornecedor', (req, res) => {
     });
 });
 app.get('/admin/produto/:id/editar', (req, res) => {
+    if (!req.session.usuario || req.session.usuario.tipo !== 'admin') return res.status(403).send('Acesso negado.');
     if (!req.session.usuario) {
         return res.redirect('/login');
     }
@@ -254,6 +266,7 @@ app.get('/admin/produto/:id/editar', (req, res) => {
 });
 
 app.post('/admin/produto/:id/editar', (req, res) => {
+    if (!req.session.usuario || req.session.usuario.tipo !== 'admin') return res.status(403).send('Acesso negado.');
     const { produtoNome, produtoFoto, produtoCategoria, produtoEstoque, produtoPreco } = req.body;
     const sqlUpdate = `update produto
         set produtoNome = ?, produtoFoto = ?, produtoCategoria = ?, produtoEstoque = ?, produtoPreco = ?
@@ -269,6 +282,7 @@ app.post('/admin/produto/:id/editar', (req, res) => {
 });
 
 app.post('/admin/produto/:id/excluir', (req, res) => {
+    if (!req.session.usuario || req.session.usuario.tipo !== 'admin') return res.status(403).send('Acesso negado.');
     db.query('delete from produto where produtoID = ?', [req.params.id], (error) => {
         if (error) {
             console.log('Erro ao excluir produto', error);

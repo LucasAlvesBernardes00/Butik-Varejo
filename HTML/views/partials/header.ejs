@@ -14,6 +14,9 @@
 <a href="/produtos">Produtos</a>
 <a href="/admin/fornecedor">Seja Fornecedor</a>
 <a href="/sobre">Sobre</a>
+<% if (locals.usuario && locals.usuario.tipo === 'admin') { %>
+<a href="/admin">Admin</a>
+<% } %>
 <% if (locals.usuario) { %>
 <span id="usuario-logado"><%= locals.usuario.email %></span>
 <form id="form-sair" action="/logout" method="POST">

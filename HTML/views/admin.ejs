@@ -61,4 +61,23 @@
 <% }) %>
 </table>
 
+<h2>Usuários</h2>
+<table>
+<tr><th>E-mail</th><th>Tipo</th><th>Ação</th></tr>
+<% usuarios.forEach(u => { %>
+<tr>
+<td><%= u.usuarioEmail %></td>
+<td><%= u.usuarioTipo %></td>
+<td>
+<% if (u.usuarioID !== locals.usuario.id) { %>
+<form action="/admin/usuario/<%= u.usuarioID %>/tipo" method="POST">
+<input type="hidden" name="tipo" value="<%= u.usuarioTipo === 'admin' ? 'cliente' : 'admin' %>">
+<button type="submit"><%= u.usuarioTipo === 'admin' ? 'Tornar cliente' : 'Tornar admin' %></button>
+</form>
+<% } %>
+</td>
+</tr>
+<% }) %>
+</table>
+
 <%- include('partials/footer') %>
