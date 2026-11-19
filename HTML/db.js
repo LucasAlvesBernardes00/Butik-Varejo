@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const pool = mysql.createPool({
-    host: 'butik-varejo-butik-varejo.j.aivencloud.com',
-    port: 25469,
+    host: 'butikvarejo-tratordeobra-a2e4.f.aivencloud.com',
+    port: 26727,
     user: 'avnadmin',
     password: process.env.DB_PASSWORD,
     database: 'defaultdb',
